@@ -29,4 +29,21 @@ module input
         
     end subroutine create_one_dimensional_quadratic_function
 
+    subroutine inputindex (index_H, index_b, index_c)
+        real(8), intent(inout)                               :: index_H, index_b, index_c
+        print *,'For one_dimensional_quadratic_function "f(x) = H x^2 + b x + c", enter the value of indexes.'
+        print *,'H = (enter a real number)'
+        read *, index_H
+        print *,'b = (enter a real number)'
+        read *, index_b
+        print *,'c = (enter a real number)'
+        read *, index_c
+    end subroutine inputindex
+
+    subroutine one_dimensional_quadratic_function (index_H, index_b, index_c, location_x, location_y)
+        real(8), intent(in)                                :: location_x, index_H, index_b, index_c 
+        real(8), intent(out)                               :: location_y
+        location_y = index_H*location_x**2.0 + index_b*location_x + index_c
+    end subroutine one_dimensional_quadratic_function
+
 end module input 
