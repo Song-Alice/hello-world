@@ -25,11 +25,18 @@ module commonCalcuation
         type(vector_x)                                     :: a, b 
         real(8),intent(inout), dimension(:,:), allocatable :: HessianMatrix
         real(8)                                            :: g1
+        integer                                            :: n 
+        n = 4 
+        allocate (HessianMatrix(n,n))
         a%x1 = h 
-        a%x2 = 0 
+        a%x2 = 0.0 
         call multi_gradient_evaluation (index, x+a, x-a, g1)
-        b%x1 = x%x1 - h 
-        b%x2 = x%x2
+        HessianMatrix(1,1) = g1 **2.0 
+        b%x1 = 0.0
+        b%x2 = h 
+        call multi_gradient_evaluation (index, x+b, x-b, g2)
+        HessianMatrix(2,2) = g2 **2.0
+        
 
         
     end subroutine HessianMatrix_evaluation

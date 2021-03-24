@@ -7,8 +7,9 @@ program main
 
 
    !real(8), dimension(:), allocatable  :: fx, x 
-   real(8)                              :: index_H, index_b, index_c
-   real(8)                              :: location_x 
+   type (oneDimensional_index)                      :: index_OneDimensional
+   type (multiDimensional_index)                    :: index_MultiDimensional
+   real(8)                                          :: location_x 
    
    
    
@@ -16,9 +17,14 @@ program main
 
    !call create_one_dimensional_quadratic_function (internal, x, fx)
 
-   call inputindex (index_H, index_b, index_c)
-   call steepest_descent (index_H, index_b, index_c, one_dimensional_quadratic_function)
-   call ConjugateGradient (Multidimensional_quadratic_function)
+   !Calculate 1D quadratic function by Steepest Descent Method.
+
+   call oneDimensional_inputindex (index_OneDimensional)
+   call steepest_descent (index_OneDimensional, one_dimensional_quadratic_function)
+
+   !Calculate 2D quadratic function by Conjugate Gradient Method.
+   call multiDimensional_inputindex (index_MultiDimensional)
+   call ConjugateGradient (index_MultiDimensional, Multidimensional_quadratic_function)
 
 
 
