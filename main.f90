@@ -31,9 +31,9 @@ program main
         !Calculate 2D quadratic function by Conjugate Gradient Method.
         call multiDimensional_inputindex (index_MultiDimensional)
         call ConjugateGradient (index_MultiDimensional, Multidimensional_quadratic_function)
-      case(3)
+      !case(3)
         !call multiDimensional_inputindex (index_MultiDimensional)
-        call example_1 
+       ! call example_1 
       case default
         call oneDimensional_inputindex (index_OneDimensional)
         call steepest_descent (index_OneDimensional, one_dimensional_quadratic_function)

@@ -51,7 +51,7 @@ module conjugate_gradient_method
         print *, 'gradient', gradient 
         call Residual (x_location, gradient, HessianMatrix, r)
         direction_p = r 
-        p(1,:) = direction_p(1,:)
+        
         direction_sum = 0.0
         
         print *, 'residual', r 
@@ -59,7 +59,8 @@ module conjugate_gradient_method
         !##############################################################################
 ! 'Location' to 'Hessian Matrix and gradient' to 'residual' to 'orthogonal direction' to 'steplength' to 'new location'. Do the loop.
         do while (iteration <= 100)
-
+            p(1,:) = direction_p(iteration,:)
+            print *,'p', p
             call stepMultiDimensional (r, HessianMatrix, p, step_length)
             !###############################################################
             ! Calculate the values of x_k+1.
@@ -79,10 +80,12 @@ module conjugate_gradient_method
             r_previous = r
             r = r_next
             iteration = iteration + 1
+            print *, 'iteration', iteration 
             !##################################################################
             ! Calucation the orthogonal direction p.
             do i = 1, iteration
-                direction_i = ((transpose(direction_p(i,:))*r)/(transpose(direction_p(i,:))*direction_sum(i,:)))*direction_p(i,:)
+                p(1,:) = direction_p (i,:)
+                direction_i = ((transpose(p)*r) / (transpose(p)*p)) * p
                 direction_sum = direction_sum + direction_i
             enddo
             direction_p (iteration,:) = r(1,:) - direction_sum(1,:)
@@ -100,6 +103,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable              :: HessianMatrix
         real(8), intent(inout), dimension(:,:), allocatable           :: r
         r = gradient - HessianMatrix * x_location
+        print *, ' residual', r 
     end subroutine Residual
 
     subroutine stepMultiDimensional (r, HessianMatrix, p, step_length)
@@ -115,7 +119,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable      :: p
         real(8), intent(in), dimension(:,:), allocatable      :: x_location
         real(8), intent(inout), dimension(:,:), allocatable   :: x_next        
-        x_next = x_location - transpose(step_length * p)
+        x_next = x_location + transpose(step_length * p)
         print *, 'x_next', x_next
     end subroutine newLocationMulti
 
