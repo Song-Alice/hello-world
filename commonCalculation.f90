@@ -3,62 +3,59 @@ module commonCalcuation
     implicit none 
 
     contains
-    subroutine gradient_evaluation (index, location, h, location_x, g)
-        type(oneDimensional_index), intent(in)           :: index
-        real(8), intent(in)                              :: h, location_x
-        real(8)                                          :: location_y1, location_y2
-        real(8), intent(out)                             :: g 
-        interface
-            subroutine location (index, value_x, value_y)
-              type(oneDimensional_index), intent(in)     :: index
-              real(8), intent(in)                        :: value_x
-              real(8), intent(out)                       :: value_y
-            end subroutine location 
-        end interface
-        call location (index, location_x + h, location_y1)
-        call location (index, location_x - h, location_y2)
-        g = (location_y1 - location_y2) / (2.0*h)
+
+    subroutine gradient_evaluation (location_y1, location_y2, h, g)
+        real(8), intent(in)                                :: h
+        real(8), intent(in)                                :: location_y1, location_y2
+        real(8), intent(out)                               :: g 
+        g = (location_y2 - location_y1) / (2.0*h)
     end subroutine gradient_evaluation
 
-    subroutine HessianMatrix_evaluation (index, x, h, HessianMatrix)
+    subroutine HessianMatrix_evaluation (index, x, h, n, HessianMatrix, gradient)
+        type(multiDimensional_index), intent(in)           :: index 
         type(vector_x), intent(in)                         :: x
-        type(vector_x)                                     :: a, b 
-        real(8),intent(inout), dimension(:,:), allocatable :: HessianMatrix
-        real(8)                                            :: g1
-        integer                                            :: n 
-        n = 4 
-        allocate (HessianMatrix(n,n))
-        a%x1 = h 
-        a%x2 = 0.0 
-        call multi_gradient_evaluation (index, x+a, x-a, g1)
-        HessianMatrix(1,1) = g1 **2.0 
-        b%x1 = 0.0
-        b%x2 = h 
-        call multi_gradient_evaluation (index, x+b, x-b, g2)
-        HessianMatrix(2,2) = g2 **2.0
+        real(8), intent(in)                                :: h
+        integer, intent(in)                                :: n  
+        real(8),intent(out), dimension(:,:), allocatable   :: gradient
+        real(8),intent(out), dimension(:,:), allocatable   :: HessianMatrix
+        type(vector_x)                                     :: location_x
+        real(8), dimension(:), allocatable                 :: y 
+        real(8)                                            :: g1, g2, g3, gx1, gx2
+        integer                                            :: l, i 
+        l = 2*n + 1
+        allocate (y(l))
+        location_x%x1 = x%x1 - 2.0*h
+        location_x%x2 = x%x2
+        do i = 1, l+1
+            call Multidimensional_quadratic_function (index, location_x, y(i))
+            location_x%x1 = location_x%x1 + h 
+            location_x%x2 = location_x%x2
+        enddo
+        call gradient_evaluation (y(3), y(1), h, g1)
+        call gradient_evaluation (y(5), y(3), h, g3)
+        call gradient_evaluation (y(4), y(2), h, g2)
+        gradient(1,1) = g2
+        ! Second derivative function.
+        call gradient_evaluation (g3, g1, h, gx1)
+        HessianMatrix(1,1) = gx1
         
-
+        location_x%x1 = x%x1
+        location_x%x2 = x%x2 - 2.0*h 
+        do i = 1, l
+            call Multidimensional_quadratic_function (index, location_x, y(i))
+            location_x%x2 = location_x%x2 + h 
+            location_x%x1 = location_x%x1
+        enddo
+        call gradient_evaluation (y(3), y(1), h, g1)
+        call gradient_evaluation (y(5), y(3), h, g3)
+        call gradient_evaluation (y(4), y(2), h, g2)
+        gradient(1,2) = g2
+        ! Second derivative function.
+        call gradient_evaluation (g3, g1, h, gx2)
+        HessianMatrix(2,2) = gx2
+        HessianMatrix(1,2) = index%c
+        HessianMatrix(2,1) = index%c 
         
     end subroutine HessianMatrix_evaluation
-
-    subroutine multi_gradient_evaluation (index, a, b, g)
-        type(multiDimensional_index), intent(in)           :: index 
-        real(8), intent(in)                                :: h
-        type(vector_x), intent(in)                         :: a , b 
-        real(8)                                            :: g1, g2
-        real(8)                                            :: location_y1, location_y2
-        interface
-            subroutine location (index, value_x, value_y)
-              type(multiDimensional_index), intent(in)     :: index
-              real(8), intent(in)                          :: value_x
-              real(8), intent(out)                         :: value_y
-            end subroutine location 
-        end interface
-        call location (index, a, location_y1)
-        call location (index, b, location_y2)
-        g = (location_y1 - location_y2) / (2.0*h)
-    end subroutine multi_gradient_evaluation
-
-
 
 end module commonCalcuation 

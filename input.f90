@@ -20,6 +20,7 @@ module input
     real(8)                               :: b1
     real(8)                               :: b2
     real(8)                               :: c
+    real(8)                               :: d 
     end type MultiDimensional_index
 
     contains
@@ -44,7 +45,7 @@ module input
 
     subroutine multiDimensional_inputindex (index)
         type(multiDimensional_index), intent(inout)        :: index
-        print *,'For one_dimensional_quadratic_function "f(x) = A1 x1^2 + A2 x2^2 + b1 x1 +b2 x2 + c", enter the value of indexes.'
+        print *,'For function "f(x1,x2) = A1 x1^2 + A2 x2^2 + b1 x1 +b2 x2 + c x1 x2 + d", enter the value of indexes.'
         print *,'A1 = (enter a real number)'
         read *, index%A1
         print *,'A2 = (enter a real number)'
@@ -55,15 +56,15 @@ module input
         read *, index%b2
         print *,'c = (enter a real number)'
         read *, index%c
+        print *,'d = (enter a real number)'
+        read *, index%d
     end subroutine multiDimensional_inputindex
 
-    subroutine Multidimensional_quadratic_function (index, location_x, location_y)
+    subroutine Multidimensional_quadratic_function (index, x, y)
         type(multiDimensional_index), intent(in)           :: index 
-        type(vector_x), intent(in)                         :: location_x
-        real(8), intent(out)                               :: location_y
-        location_y = index%A1 * location_x%x1**2.0 + index%A2 * location_x%x2**2.0 + index%b1*location_x%x1 + index%b2*location_x%x2 + index%c
+        type(vector_x), intent(in)                         :: x
+        real(8), intent(out)                               :: y
+        y = index%A1 * x%x1**2.0 + index%A2 * x%x2**2.0 + index%b1 * x%x1 + index%b2 * x%x2 + index%c * x%x1 * x%x2 + index%d
     end subroutine Multidimensional_quadratic_function
-
-    
 
 end module input 
