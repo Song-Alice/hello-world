@@ -34,13 +34,13 @@ module test
         real(8), intent(out)                            :: value_y
       end subroutine location 
       end interface
-      index_multiDimensional%A1 = -2.0
-      index_multiDimensional%A2 =  2.0
-      index_multiDimensional%b1 = -3.0
-      index_multiDimensional%b2 = -2.0
-      index_multiDimensional%c  =  4.0
+      index_multiDimensional%A1 = 2.0
+      index_multiDimensional%A2 = 2.0
+      index_multiDimensional%b1 = 3.0
+      index_multiDimensional%b2 = 2.0
+      index_multiDimensional%c  = 8.0
       index_multiDimensional%d  = -5.0
-      print *, 'f(x1,x2) = -2.0 * x1^2 + 2.0 * x2^2 - 3.0 * x1 - 2.0 * x2 + 4.0 * x1 x2 - 5.0'
+      print *, 'f(x1,x2) = 2.0 * x1^2 + 2.0 * x2^2 + 3.0 * x1 + 2.0 * x2 + 8.0 * x1 x2 - 5.0, initial (0, 0).'
       call ConjugateGradient (index_multiDimensional, location)
     end subroutine test_conjugate_gradient_method
 

@@ -7,7 +7,7 @@ module steepest_descent_method
 
     subroutine steepest_descent (index, location)
         type(oneDimensional_index), intent(in)          :: index 
-        real(8)                                         :: internal = 0.1, h = 0.01, initial_x = -10.0
+        real(8)                                         :: internal = 0.1, h = 0.01, initial_x = -100.0
         real(8)                                         :: g, previous_g 
         real(8)                                         :: location_x, previous_location_x, next_location_x 
         real(8)                                         :: p, step_length

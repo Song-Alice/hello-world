@@ -12,17 +12,17 @@ module commonCalcuation
     end subroutine gradient_evaluation
 
     subroutine HessianMatrix_evaluation (index, x, h, n, HessianMatrix, gradient)
-        type(multiDimensional_index), intent(in)           :: index 
-        type(vector_x), intent(in)                         :: x
-        real(8), intent(in)                                :: h
-        integer, intent(in)                                :: n  
-        real(8),intent(inout), dimension(:,:), allocatable   :: gradient
-        real(8),intent(inout), dimension(:,:), allocatable   :: HessianMatrix
-        type(vector_x)                                     :: location_x
-        real(8), dimension(:), allocatable                 :: y 
-        real(8)                                            :: g1, g2, g3, gx1, gx2
-        integer                                            :: l, i 
-        real(8)                                            :: y_value
+        type(multiDimensional_index), intent(in)             :: index 
+        type(vector_x), intent(in)                           :: x
+        real(8), intent(in)                                  :: h
+        integer, intent(in)                                  :: n  
+        real(8), intent(inout), dimension(:,:), allocatable  :: gradient
+        real(8), intent(inout), dimension(:,:), allocatable  :: HessianMatrix
+        type(vector_x)                                       :: location_x
+        real(8), dimension(:), allocatable                   :: y 
+        real(8)                                              :: g1, g2, g3, gx1, gx2
+        integer                                              :: l, i 
+        real(8)                                              :: y_value
         l = 2*n + 1
         allocate (y(l))
         location_x%x1 = x%x1 - 2.0*h
@@ -58,7 +58,6 @@ module commonCalcuation
         HessianMatrix(2,2) = gx2
         HessianMatrix(1,2) = index%c
         HessianMatrix(2,1) = index%c 
-        print *, 'h', HessianMatrix
         
     end subroutine HessianMatrix_evaluation
 
