@@ -21,7 +21,7 @@ module input
     real(8)                               :: b2
     real(8)                               :: c
     real(8)                               :: d 
-    end type MultiDimensional_index
+    end type multiDimensional_index
 
     contains
 
@@ -45,7 +45,7 @@ module input
 
     subroutine multiDimensional_inputindex (index)
         type(multiDimensional_index), intent(inout)        :: index
-        print *,'For function "f(x1,x2) = A1 x1^2 + A2 x2^2 + b1 x1 +b2 x2 + c x1 x2 + d", enter the value of indexes.'
+        print *,'For function "f(x1,x2) = A1 x1^2 + A2 x2^2 + b1 x1 + b2 x2 + c x1 x2 + d", enter the value of indexes.'
         print *,'A1 = (enter a real number)'
         read *, index%A1
         print *,'A2 = (enter a real number)'

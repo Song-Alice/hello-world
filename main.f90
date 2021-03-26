@@ -3,7 +3,7 @@ program main
    use commonCalcuation
    use steepest_descent_method
    use conjugate_gradient_method
-   use example
+   use test
    implicit none
 
 
@@ -13,7 +13,12 @@ program main
    integer                                          :: Dimension
    !integer                                          :: One_Dimension = 1, Two_Dimension = 2
 
-   !call create_one_dimensional_quadratic_function (internal, x, fx)
+   !*************************************************************************************************
+   ! Test the program.
+   call test_steepest_descent_method   (one_dimensional_quadratic_function)
+   call test_conjugate_gradient_method (Multidimensional_quadratic_function)
+   !*************************************************************************************************
+   !Let the user make the choices.
    print *, 'Please choose the dimension of quadratic function. Enter ''1'' for 1D-function. Enter ''2'' for 2D-function.&
     & Enter other integer for both.'
    read *, Dimension 
@@ -26,9 +31,9 @@ program main
         !Calculate 2D quadratic function by Conjugate Gradient Method.
         call multiDimensional_inputindex (index_MultiDimensional)
         call ConjugateGradient (index_MultiDimensional, Multidimensional_quadratic_function)
-      case(3)
-        call multiDimensional_inputindex (index_MultiDimensional)
-        call example2 (index_MultiDimensional)
+      !case(3)
+      !  call multiDimensional_inputindex (index_MultiDimensional)
+      !  call example_2 (index_MultiDimensional)
       case default
         call oneDimensional_inputindex (index_OneDimensional)
         call steepest_descent (index_OneDimensional, one_dimensional_quadratic_function)

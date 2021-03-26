@@ -16,7 +16,6 @@ module steepest_descent_method
         integer                                         :: iteration = 0
         
         interface
-
            subroutine location (indexinput, value_x, value_y)
               import                                        :: oneDimensional_index
               type(oneDimensional_index), intent(in)        :: indexinput 

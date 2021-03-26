@@ -68,7 +68,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable              :: x_location
         real(8), intent(in), dimension(:,:), allocatable              :: gradient
         real(8), intent(in), dimension(:,:), allocatable              :: HessianMatrix
-        real(8), intent(out), dimension(:,:), allocatable             :: r, p 
+        real(8), intent(inout), dimension(:,:), allocatable           :: r, p 
         r = gradient - HessianMatrix * x_location
         p = r
     end subroutine Initialization
@@ -77,21 +77,21 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable              :: HessianMatrix  
         real(8), intent(in), dimension(:,:), allocatable              :: r, p 
         real(8), intent(in), dimension(:,:), allocatable              :: step_length
-        real(8), intent(out),dimension(:,:), allocatable              :: r_next
+        real(8), intent(inout),dimension(:,:), allocatable            :: r_next
         r_next = r - step_length * HessianMatrix * p 
-        print *, 'residual', r_next  
+        !print *, 'residual', r_next  
     end subroutine residual      
 
     subroutine directionMultiDimensional (r, r_previous, p_previous, p)
         real(8), intent(in), dimension(:,:), allocatable              :: r, r_previous, p_previous  
-        real(8), intent(out), dimension(:,:), allocatable             :: p
+        real(8), intent(inout), dimension(:,:), allocatable           :: p
         p = r +( (transpose(r) * r) / transpose(r_previous) * r_previous) * p_previous
     end subroutine directionMultiDimensional
 
     subroutine stepMultiDimensional (r, HessianMatrix, p, step_length)
         real(8), intent(in), dimension(:,:), allocatable      :: HessianMatrix
         real(8), intent(in), dimension(:,:), allocatable      :: r, p 
-        real(8), intent(out), dimension(:,:), allocatable     :: step_length
+        real(8), intent(inout), dimension(:,:), allocatable   :: step_length
         step_length = transpose(r) * r / (transpose(p) * HessianMatrix * p)
     end subroutine stepMultiDimensional
 
@@ -99,7 +99,7 @@ module conjugate_gradient_method
         real(8), intent(in),dimension(:,:), allocatable       :: step_length
         real(8), intent(in), dimension(:,:), allocatable      :: p
         real(8), intent(in), dimension(:,:), allocatable      :: x_location
-        real(8), intent(out), dimension(:,:), allocatable     :: x_next        
+        real(8), intent(inout), dimension(:,:), allocatable   :: x_next        
         x_next = x_location + step_length * p
     end subroutine newLocationMulti
 
