@@ -35,7 +35,7 @@ module conjugate_gradient_method
         allocate (gradient (1,n))
         allocate (r (1,n), r_next (1,n), r_previous (1,n))
         allocate (p (1,n), p_previous (1,n))
-        allocate (direction_p(iteration,n),direction_i (1,n), direction_sum (1,n))
+        allocate (direction_i (1,n), direction_sum (1,n))
         allocate (step_length (1,n))
 
         !################################################################################
@@ -50,17 +50,15 @@ module conjugate_gradient_method
         print *, 'Hessian Matrix', HessianMatrix
         print *, 'gradient', gradient 
         call Residual (x_location, gradient, HessianMatrix, r)
-        direction_p = r 
-        
+        p = r
         direction_sum = 0.0
         
-        print *, 'residual', r 
+        !print *, 'residual', r 
         
         !##############################################################################
 ! 'Location' to 'Hessian Matrix and gradient' to 'residual' to 'orthogonal direction' to 'steplength' to 'new location'. Do the loop.
         do while (iteration <= 100)
-            p(1,:) = direction_p(iteration,:)
-            print *,'p', p
+          
             call stepMultiDimensional (r, HessianMatrix, p, step_length)
             !###############################################################
             ! Calculate the values of x_k+1.
@@ -83,12 +81,17 @@ module conjugate_gradient_method
             print *, 'iteration', iteration 
             !##################################################################
             ! Calucation the orthogonal direction p.
+            allocate (direction_p(iteration, n))
+            direction_p(iteration,:) = p(1,:)
             do i = 1, iteration
                 p(1,:) = direction_p (i,:)
                 direction_i = ((transpose(p)*HessianMatrix*r) / (transpose(p)*HessianMatrix*p)) * p
                 direction_sum = direction_sum + direction_i
             enddo
             direction_p (iteration,:) = r(1,:) - direction_sum(1,:)
+            p(1,:) = direction_p(iteration,:)
+            ! print *,'direction_p', direction_p
+            deallocate (direction_p)
 
             !call directionMultiDimensional (r, r_previous, p_previous, p)
         enddo
