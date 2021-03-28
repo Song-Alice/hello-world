@@ -32,7 +32,7 @@ module steepest_descent_method
         previous_location_x = location_x 
         location_x = previous_location_x + internal 
         iteration = 1
-        print *,'location_x', location_x, 'g', g 
+       ! print *,'location_x', location_x, 'g', g 
   
        !Calculate by steepest descent method.
         do while (iteration <= 100)
@@ -50,8 +50,8 @@ module steepest_descent_method
           location_x = next_location_x
           previous_g = g 
           iteration = iteration + 1 
-          print *, 'previous_x', previous_location_x, 'previous_g', previous_g, 'steplength', step_length
-          print *, 'x', location_x
+         ! print *, 'previous_x', previous_location_x, 'previous_g', previous_g, 'steplength', step_length
+         ! print *, 'x', location_x
           call location (index, previous_location_x, previous_location_y)
           call location (index, location_x, location_y)
           if ((location_x - previous_location_x) <= minimum_difference) exit 
