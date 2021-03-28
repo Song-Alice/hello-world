@@ -69,16 +69,16 @@ module conjugate_gradient_method
             x%x1 = x_location(1,1)
             x%x2 = x_location(1,2)
             call location (index, x, location_y)
-            print *, 'y_k+1', location_y
+           ! print *, 'y_k+1', location_y
             call HessianMatrix_evaluation (index, x, h, n, HessianMatrix, gradient)
-            print *, 'HessianMatrix', HessianMatrix
-            print *, 'gradient', gradient
+           ! print *, 'HessianMatrix', HessianMatrix
+           ! print *, 'gradient', gradient
             call Residual (x_location, gradient, HessianMatrix, r_next)
             if ((abs(r_next(1,1)) <= minimum_difference) .and. (abs(r_next(1,2)) <= minimum_difference)) exit 
             r_previous = r
             r = r_next
             iteration = iteration + 1
-            print *, 'iteration', iteration 
+           ! print *, 'iteration', iteration 
             !##################################################################
             ! Calucation the orthogonal direction p.
             allocate (direction_p(iteration, n))
@@ -106,7 +106,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable              :: HessianMatrix
         real(8), intent(inout), dimension(:,:), allocatable           :: r
         r = gradient - HessianMatrix * x_location
-        print *, ' residual', r 
+       ! print *, ' residual', r 
     end subroutine Residual
 
     subroutine stepMultiDimensional (r, HessianMatrix, p, step_length)
@@ -114,7 +114,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable      :: r, p 
         real(8), intent(inout), dimension(:,:), allocatable   :: step_length
         step_length = transpose(r) * r / (transpose(p) * HessianMatrix * p)
-        print *, 'step_length', step_length
+       ! print *, 'step_length', step_length
     end subroutine stepMultiDimensional
 
     subroutine newLocationMulti (x_location, step_length, p, x_next) 
@@ -123,7 +123,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable      :: x_location
         real(8), intent(inout), dimension(:,:), allocatable   :: x_next        
         x_next = x_location + transpose(step_length * p)
-        print *, 'x_next', x_next
+       ! print *, 'x_next', x_next
     end subroutine newLocationMulti
 
     subroutine residual_1 (HessianMatrix, step_length, r, p, r_next)
@@ -132,7 +132,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable              :: step_length
         real(8), intent(inout),dimension(:,:), allocatable            :: r_next
         r_next = r - transpose(step_length * HessianMatrix * p) 
-        print *, 'residual', r_next
+       ! print *, 'residual', r_next
         !print *, 'residual', r_next  
     end subroutine residual_1      
 
@@ -142,7 +142,7 @@ module conjugate_gradient_method
         real(8), intent(in), dimension(:,:), allocatable              :: r, r_previous, p_previous  
         real(8), intent(inout), dimension(:,:), allocatable           :: p
         p = r -( (transpose(r) * r) / (transpose(r_previous) * r_previous)) * p_previous
-        print *, 'direction', p 
+       ! print *, 'direction', p 
     end subroutine directionMultiDimensional
 
 end module conjugate_gradient_method
