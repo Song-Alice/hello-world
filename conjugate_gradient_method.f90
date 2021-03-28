@@ -85,7 +85,7 @@ module conjugate_gradient_method
             ! Calucation the orthogonal direction p.
             do i = 1, iteration
                 p(1,:) = direction_p (i,:)
-                direction_i = ((transpose(p)*r) / (transpose(p)*p)) * p
+                direction_i = ((transpose(p)*HessianMatrix*r) / (transpose(p)*HessianMatrix*p)) * p
                 direction_sum = direction_sum + direction_i
             enddo
             direction_p (iteration,:) = r(1,:) - direction_sum(1,:)
