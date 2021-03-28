@@ -126,6 +126,8 @@ module conjugate_gradient_method
        ! print *, 'x_next', x_next
     end subroutine newLocationMulti
 
+!###############################################
+! Do not use this one.
     subroutine residual_1 (HessianMatrix, step_length, r, p, r_next)
         real(8), intent(in), dimension(:,:), allocatable              :: HessianMatrix  
         real(8), intent(in), dimension(:,:), allocatable              :: r, p 
@@ -137,7 +139,7 @@ module conjugate_gradient_method
     end subroutine residual_1      
 
     !*********************************************************************************************
-    ! Subroutine about orthogonal direction.
+    ! Subroutine about orthogonal direction. Do not use this one.
     subroutine directionMultiDimensional (r, r_previous, p_previous, p)
         real(8), intent(in), dimension(:,:), allocatable              :: r, r_previous, p_previous  
         real(8), intent(inout), dimension(:,:), allocatable           :: p
